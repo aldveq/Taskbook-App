@@ -1,11 +1,8 @@
-import React from 'react'
+import React from "react";
+import TaskbookAppRouter from "./routes/TaskbookAppRouter";
 
 const TaskbookApp = () => {
-    return (
-        <div>
-            <h1>Taskbook App</h1>            
-        </div>
-    )
-}
+  return <TaskbookAppRouter />;
+};
 
 export default TaskbookApp;

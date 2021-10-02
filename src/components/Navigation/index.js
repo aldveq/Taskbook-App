@@ -3,6 +3,8 @@ import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { Link } from 'react-router-dom';
+import { sessionToken } from "../../utilities/constants";
+import { useHistory } from "react-router-dom";
 
 const navigation = [
   { name: "Tasks", href: "/tasks", current: false},
@@ -15,6 +17,15 @@ function classNames(...classes) {
 }
 
 const Navigation = () => {
+
+  const history = useHistory();
+
+  const handlerLogout = () => {
+    sessionStorage.removeItem(sessionToken.name);
+    sessionStorage.removeItem('tokenExpiry');
+    history.push('/login');
+  }
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -94,15 +105,15 @@ const Navigation = () => {
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <Link
-                            to="/signout"
+                          <button
                             className={classNames(
                               active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
+                              "block px-4 py-2 text-sm text-gray-700 w-full text-left"
                             )}
+                            onClick={handlerLogout}
                           >
                             Sign out
-                          </Link>
+                          </button>
                         )}
                       </Menu.Item>
                     </Menu.Items>

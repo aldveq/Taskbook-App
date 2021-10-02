@@ -13,6 +13,9 @@ const Login = ({history}) => {
 
     if( (token !== null && tokenExpiry !== null) && (currentTime < tokenExpiry) ) {
       history.push('/dashboard');
+    } else {
+      sessionStorage.removeItem(sessionToken.name);
+      sessionStorage.removeItem('tokenExpiry');
     }
     
   }, [history, token, currentTime, tokenExpiry]);

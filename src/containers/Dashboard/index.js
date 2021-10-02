@@ -23,6 +23,7 @@ const Dashboard = ({ history }) => {
     if (tokenParam !== null) {
       sessionStorage.setItem(sessionToken.name, tokenParam);
       sessionStorage.setItem("tokenExpiry", Math.round(new Date().getTime() / 1000) + 3600);
+      window.history.pushState({}, document.title, '/dashboard');
       return;
     }
     

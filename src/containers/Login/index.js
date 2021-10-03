@@ -12,7 +12,7 @@ const Login = ({history}) => {
   useEffect(() => {
 
     if( (token !== null && tokenExpiry !== null) && (currentTime < tokenExpiry) ) {
-      history.push('/dashboard');
+      history.push('/tasks');
     } else {
       sessionStorage.removeItem(sessionToken.name);
       sessionStorage.removeItem('tokenExpiry');

@@ -18,7 +18,25 @@ export class TaskbookThirdService {
     }
 
     async getTasksbooks() {
-        const res = await this.axios.get('/tasks');
-        return res.data;
+        try {
+            const res = await this.axios.get('/tasks');
+            const tasksArray = res.data.map(d => {
+                return {
+                    id: d.id,
+                    title: d.title.rendered,
+                    outcome: d.cmb2.taskbook_rest_metabox.taskbook_outcome,
+                    post_level:  d.cmb2.taskbook_rest_metabox.taskbook_post_level,
+                    pre_level: d.cmb2.taskbook_rest_metabox.taskbook_pre_level,
+                    prediction: d.cmb2.taskbook_rest_metabox.taskbook_prediction,
+                    status: d.task_status,
+                    content: d.content.rendered,
+                    date_created: d.date,
+                    date_modified: d.modified,
+                }
+            });
+            return tasksArray;
+        } catch (error) {
+            return error;
+        }
     }
 }

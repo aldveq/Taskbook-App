@@ -1,19 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { convertDateISOStringToNormalDate } from "../../utilities/utilities";
 
 const TaskCard = ({id, title, date_modified, status}) => {
   return (
     <div className="bg-gray-200 flex flex-wrap p-5 rounded-md">
       <div className="w-full md:w-4/5">
-        <p className="mb-1 font-bold text-lg">
-          {title}
-        </p>
-        <p className="text-sm">{`Task updated on ${date_modified}`}</p>
+        <p className="mb-1 font-bold text-lg" dangerouslySetInnerHTML={{__html: title}}></p>
+        <p className="text-sm">{`Task updated on ${convertDateISOStringToNormalDate(date_modified)}`}</p>
       </div>
       <div className="w-full xl:w-1/5 flex justify-start xl:justify-end items-center order-first xl:order-none mb-2 xl:mb-0">
-        <span className="text-sm bg-yellow-500 text-white p-2">
-            {status}
-        </span>
+        <span className="text-sm bg-yellow-500 text-white p-2" dangerouslySetInnerHTML={{__html: status}}></span>
       </div>
       <div className="w-full flex justify-end items-center mt-4">
         <Link className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center" to={`/tasks/${id}`}>

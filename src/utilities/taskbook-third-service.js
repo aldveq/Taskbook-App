@@ -8,7 +8,7 @@ export class TaskbookThirdService {
 
     createInstance(token) {
         const axiosInstance = axios.create({
-            baseURL: 'http://headlesscms.local/wp-json/wp/v2',
+            baseURL: 'https://headlesscms.local/wp-json/wp/v2',
             headers: {
                 Authorization: `Bearer ${token}`,
             },

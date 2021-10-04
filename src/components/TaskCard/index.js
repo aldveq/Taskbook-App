@@ -2,18 +2,32 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { convertDateISOStringToNormalDate } from "../../utilities/utilities";
 
-const TaskCard = ({id, title, date_modified, status}) => {
+const TaskCard = ({ id, title, date_modified, status }) => {
+  const statusColor =
+    status === "In progress" ? "bg-yellow-500" : "bg-green-500";
+
   return (
     <div className="bg-gray-200 flex flex-wrap p-5 rounded-md">
       <div className="w-full md:w-4/5">
-        <p className="mb-1 font-bold text-lg" dangerouslySetInnerHTML={{__html: title}}></p>
-        <p className="text-sm">{`Task updated on ${convertDateISOStringToNormalDate(date_modified)}`}</p>
+        <p
+          className="mb-1 font-bold text-lg"
+          dangerouslySetInnerHTML={{ __html: title }}
+        ></p>
+        <p className="text-sm">{`Task updated on ${convertDateISOStringToNormalDate(
+          date_modified
+        )}`}</p>
       </div>
       <div className="w-full xl:w-1/5 flex justify-start xl:justify-end items-center order-first xl:order-none mb-2 xl:mb-0">
-        <span className="text-sm bg-yellow-500 text-white p-2" dangerouslySetInnerHTML={{__html: status}}></span>
+        <span
+          className={`text-sm ${statusColor} text-white p-2`}
+          dangerouslySetInnerHTML={{ __html: status }}
+        ></span>
       </div>
       <div className="w-full flex justify-end items-center mt-4">
-        <Link className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center" to={`/tasks/${id}`}>
+        <Link
+          className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
+          to={`/tasks/${id}`}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"
@@ -29,7 +43,10 @@ const TaskCard = ({id, title, date_modified, status}) => {
           </svg>
           <span className="text-sm ml-1">View</span>
         </Link>
-        <Link className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center ml-2" to={`/tasks/edit/${id}`}>
+        <Link
+          className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center ml-2"
+          to={`/tasks/edit/${id}`}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"

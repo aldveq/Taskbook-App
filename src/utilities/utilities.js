@@ -7,10 +7,10 @@ const convertDateISOStringToNormalDate = (dateISOString) => {
   let day = date.getDate();
   let hour = date.getHours();
   let minutes = date.getMinutes();
-  const AMPM = hour >= 12 ? 'PM' : 'AM';
+  const AMPM = hour >= 12 ? "PM" : "AM";
   hour = hour % 12;
   hour = hour ? hour : 12; // the hour '0' should be '12'
-  minutes = minutes < 10 ? '0'+minutes : minutes;
+  minutes = minutes < 10 ? "0" + minutes : minutes;
 
   if (month < 10) {
     month = "0" + month;
@@ -19,4 +19,8 @@ const convertDateISOStringToNormalDate = (dateISOString) => {
   return `${months[month]} ${day}, ${year}, ${hour}:${minutes} ${AMPM}`;
 };
 
-export {convertDateISOStringToNormalDate};
+const getCurrentTime = () => {
+  return Math.round(new Date().getTime() / 1000);
+};
+
+export { convertDateISOStringToNormalDate, getCurrentTime };

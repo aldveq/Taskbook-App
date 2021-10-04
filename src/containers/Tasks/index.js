@@ -3,6 +3,7 @@ import { useLocation } from "react-router";
 import { Navigation, TaskCard } from "../../components";
 import { sessionToken } from "../../utilities/constants";
 import { TaskbookThirdService } from "../../utilities/taskbook-third-service";
+import { getCurrentTime } from "../../utilities/utilities";
 
 const Tasks = ({ history }) => {
   const location = useLocation();
@@ -10,50 +11,69 @@ const Tasks = ({ history }) => {
   const urlParams = new URLSearchParams(queryString);
   const tokenParam = urlParams.get("access_token") || null; // Token from the URL params
 
-  const currentTime = Math.round(new Date().getTime() / 1000); // Current Time
+  const currentTime = getCurrentTime(); // Current Time
   const tokenExpiry = sessionStorage.getItem("tokenExpiry") || null; // Token Expiry Time
+  const tokenSession = sessionStorage.getItem(sessionToken.name) || null; // Token Session
 
   const [tasks, setTasks] = useState([]);
 
   const getTasks = useCallback(async () => {
-    const taskbookThirdService = new TaskbookThirdService(tokenParam);
-    const tasks = await taskbookThirdService.getTasksbooks();
-    return tasks;
-  }, [tokenParam]);
+    if (tokenParam !== null) {
+      const taskbookThirdService = new TaskbookThirdService(tokenParam);
+      const tasks = await taskbookThirdService.getTasksbooks();
+      return tasks;
+    }
+
+    if (tokenSession !== null) {
+      const taskbookThirdService = new TaskbookThirdService(tokenSession);
+      const tasks = await taskbookThirdService.getTasksbooks();
+      return tasks;
+    }
+  }, [tokenParam, tokenSession]);
 
   useEffect(() => {
     if (tokenExpiry !== null && currentTime > tokenExpiry) {
       sessionStorage.removeItem(sessionToken.name);
+      sessionStorage.removeItem("tokenExpiry");
       history.push("/");
       return;
     }
 
     if (tokenParam !== null) {
       sessionStorage.setItem(sessionToken.name, tokenParam);
-      sessionStorage.setItem(
-        "tokenExpiry",
-        Math.round(new Date().getTime() / 1000) + 3600
-      );
+      sessionStorage.setItem("tokenExpiry", getCurrentTime() + 3600);
       window.history.pushState({}, document.title, "/tasks");
 
       getTasks()
         .then((results) => {
           setTasks(results);
-          console.log(results);
         })
         .catch((error) => alert(`An error ocurred: ${error}`));
 
       return;
     }
-  }, [tokenParam, history, currentTime, tokenExpiry, getTasks]);
+
+    if (tokenSession !== null) {
+      getTasks()
+        .then((results) => {
+          setTasks(results);
+        })
+        .catch((error) => alert(`An error ocurred: ${error}`));
+
+      return;
+    }
+
+  }, [tokenParam, tokenSession, history, currentTime, tokenExpiry, getTasks]);
 
   const drawTaskList = () => {
-      if(tasks.length === 0) {
-          return <h1>You don't have registered tasks. Please, insert a new one.</h1>
-      }
+    if (tasks.length === 0) {
+      return (
+        <h1>You don't have registered tasks. Please, insert a new one.</h1>
+      );
+    }
 
-      return tasks.map(tk => <TaskCard key={tk.id} {...tk} />);
-  }
+    return tasks.map((tk) => <TaskCard key={tk.id} {...tk} />);
+  };
 
   return (
     <>

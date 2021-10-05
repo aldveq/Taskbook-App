@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router";
-import { Navigation, TaskCard } from "../../components";
+import { MainTitle, Navigation, TaskCard } from "../../components";
 import { sessionToken } from "../../utilities/constants";
 import { TaskbookThirdService } from "../../utilities/taskbook-third-service";
 import { getCurrentTime } from "../../utilities/utilities";
+import MainContainer from "../MainContainer";
 
 const Tasks = ({ history }) => {
   const location = useLocation();
@@ -62,7 +63,6 @@ const Tasks = ({ history }) => {
 
       return;
     }
-
   }, [tokenParam, tokenSession, history, currentTime, tokenExpiry, getTasks]);
 
   const drawTaskList = () => {
@@ -78,12 +78,12 @@ const Tasks = ({ history }) => {
   return (
     <>
       <Navigation />
-      <div className="container mx-auto py-10 lg:max-w-7xl px-5">
-        <h1 className="font-bold text-3xl mb-5">Tasks</h1>
+      <MainContainer>
+        <MainTitle title="Tasks" />
         <div className="grid grid-cols-1 grid-rows-1 md:grid-cols-3 md:grid-rows-3 xl:grid-cols-2 gap-4 xl:gap-8">
           {drawTaskList()}
         </div>
-      </div>
+      </MainContainer>
     </>
   );
 };

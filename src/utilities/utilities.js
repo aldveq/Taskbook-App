@@ -23,4 +23,41 @@ const getCurrentTime = () => {
   return Math.round(new Date().getTime() / 1000);
 };
 
-export { convertDateISOStringToNormalDate, getCurrentTime };
+const getFormattedTaskData = (task) => {
+  return {
+    id: task?.id,
+    title: task?.title?.rendered,
+    outcome: task?.cmb2?.taskbook_rest_metabox?.taskbook_outcome,
+    post_level: task?.cmb2?.taskbook_rest_metabox?.taskbook_post_level,
+    pre_level: task?.cmb2?.taskbook_rest_metabox?.taskbook_pre_level,
+    prediction: task?.cmb2?.taskbook_rest_metabox?.taskbook_prediction,
+    status: task?.task_status,
+    content: task?.content?.rendered,
+    date_created: task?.date,
+    date_modified: task?.modified,
+  };
+};
+
+const getStressLevel = (level) => {
+  switch (level) {
+    case "1":
+      return "Very stressed";
+    case "2":
+      return "Somewhat stressed";
+    case "3":
+      return "Neutral";
+    case "4":
+      return "Somewhat relaxed";
+    case "5":
+      return "Very relaxed";
+    default:
+      break;
+  }
+};
+
+export {
+  convertDateISOStringToNormalDate,
+  getCurrentTime,
+  getFormattedTaskData,
+  getStressLevel,
+};
